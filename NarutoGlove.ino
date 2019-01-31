@@ -9,9 +9,9 @@
 #include <Keyboard.h>
 
 // Pins for sensors on hands
-// 2: Hare
-// 3: Tiger
-// 4: Dog
+// 2: Dog
+// 3: Hare
+// 4: Ram
 // 5: Boar
 
 // Movement Pins
@@ -23,10 +23,10 @@ const int pinCount = 6;
 // Integer array that holds the pin numbers of the glove controller
 int inputPins[pinCount - 2] = {2, 3, 4, 5};
 // Character array that holds the keys to be pressed
-char controlKeys[pinCount] = {'o', 'p', 'i', 'u', 'a', 'd'};
+char controlKeys[pinCount] = {'i', 'o', 'p', 'u', 'a', 'd'};
 // Array of strings, use of * means it is a array of strings
 // Used for debugging
-char* controlNames[pinCount - 2] = {"Hare", "Tiger", "Dog", "Boar"};
+char* controlNames[pinCount - 2] = {"Dog", "Hare", "Ram", "Boar"};
 
 // Setup function
 void setup() {
@@ -37,7 +37,7 @@ void setup() {
   Keyboard.begin();
 
   // Loops through inputPins and sets them to INPUT_PULLUP mode
-  // Uses internal pullup resistor so we don't have ot use one on the breadboard
+  // Uses internal pullup resistor so we don't have to use one on the breadboard
   for (int i = 0; i < pinCount; i++) {
     pinMode(inputPins[i], INPUT_PULLUP);
   }
@@ -112,8 +112,8 @@ void loop() {
   if (keyPressed == true) {
     for (int i = 0; i < pinCount; i++) {
      // Debug lines
-     Serial.print("Releasing: ");
-     Serial.println(controlKeys[i]);
+//     Serial.print("Releasing: ");
+//     Serial.println(controlKeys[i]);
      // Releases the key
      Keyboard.release(controlKeys[i]);
     }
