@@ -10,7 +10,7 @@
 
 // Pins for sensors on hands
 // 2: Dog
-// 3: Hare
+// 3: Ox
 // 4: Ram
 // 5: Boar
 
@@ -26,7 +26,7 @@ int inputPins[pinCount - 2] = {2, 3, 4, 5};
 char controlKeys[pinCount] = {'i', 'o', 'p', 'u', 'a', 'd'};
 // Array of strings, use of * means it is a array of strings
 // Used for debugging
-char* controlNames[pinCount - 2] = {"Dog", "Hare", "Ram", "Boar"};
+char* controlNames[pinCount - 2] = {"Dog", "Ox", "Ram", "Boar"};
 
 // Setup function
 void setup() {
@@ -37,7 +37,7 @@ void setup() {
   Keyboard.begin();
 
   // Loops through inputPins and sets them to INPUT_PULLUP mode
-  // Uses internal pullup resistor so we don't have to use one on the breadboard
+  // Uses internal pullup resistor so we don't have ot use one on the breadboard
   for (int i = 0; i < pinCount; i++) {
     pinMode(inputPins[i], INPUT_PULLUP);
   }
@@ -64,10 +64,13 @@ void loop() {
   for (int i = 0; i < pinCount; i++) {
     // Edgecases that stops a key from being pressed accidentally
     // Happens when some hand signs have two sensors touching at the same time
-    if (i == 3 && inputState[0] == LOW) {
-      continue;
-    }
-    if (i == 3 && inputState[1] == LOW) {
+//    if (i == 3 && inputState[0] == LOW) {
+//      continue;
+//    }
+//    if (i == 3 && inputState[1] == LOW) {
+//      continue;
+//    }
+    if (i == 2 && inputState[1] == LOW) {
       continue;
     }
     // When looping through inputState, if the pin is LOW (On)
@@ -97,6 +100,7 @@ void loop() {
     keyPressed = true;
     
   }
+  Serial.println(analogRead(A0));
   // Right control
   if(analogRead(A1) > 500) {
     Serial.println("Pressing : D");
