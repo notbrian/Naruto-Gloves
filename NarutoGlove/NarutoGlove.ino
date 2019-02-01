@@ -28,6 +28,12 @@ char controlKeys[pinCount] = {'i', 'o', 'p', 'u', 'a', 'd'};
 // Used for debugging
 char* controlNames[pinCount - 2] = {"Dog", "Ox", "Ram", "Boar"};
 
+int leftMin = 1023;
+int leftMax = 0;
+
+int rightMin = 1023;
+int rightMax = 0;
+
 // Setup function
 void setup() {
   // Starts up serial communciation
@@ -41,10 +47,40 @@ void setup() {
   for (int i = 0; i < pinCount; i++) {
     pinMode(inputPins[i], INPUT_PULLUP);
   }
+
+  
+ while (millis() < 5000) {
+   int leftValue = analogRead(A0);
+   int rightValue = analogRead(A1);
+
+   // record the maximum sensor value
+   if (leftValue > leftMax) {
+     leftMax = leftValue;
+   }
+
+   // record the minimum sensor value
+   if (leftValue < leftMin) {
+     leftMin = leftValue;
+   }
+
+      // record the maximum sensor value
+   if (rightValue > rightMax) {
+     rightMax = rightValue;
+   }
+
+   // record the minimum sensor value
+   if (rightValue < rightMin) {
+     rightMin = rightValue;
+   }
+ }
+  
 }
 
 // Main loop
 void loop() {
+   int leftValue = analogRead(A0);
+   int rightValue = analogRead(A1);
+  
   // Integer array that contians the state of every glove pin
   // 0 = Off
   // 1 = On
@@ -91,18 +127,29 @@ void loop() {
       keyPressed = true;
     }
   }
+  
+  leftValue = map(leftValue, leftMin, leftMax, 0, 255);
+  rightValue = map(rightValue, rightMin, rightMax, 0, 255);
+  
+  leftValue = constrain(leftValue, 0, 255);
+  rightValue = constrain(rightValue, 0, 255);
+
 
   // If statements that check if a person has pressed on the movement pad
   // Left control
-  if(analogRead(A0) > 500) {
+  if(leftValue > 200) {
     Serial.println("Pressing : A");
     Keyboard.press('a');
     keyPressed = true;
     
   }
+  Serial.println(leftValue);
+    Serial.println(rightValue);
   Serial.println(analogRead(A0));
+    Serial.println(analogRead(A1));
+
   // Right control
-  if(analogRead(A1) > 500) {
+  if(rightValue > 200) {
     Serial.println("Pressing : D");
     Keyboard.press('d');
     keyPressed = true;
